@@ -146,7 +146,7 @@ int setupAccessory()
 	response = libusb_control_transfer(
 		handle, //handle
 		0xC0, //bmRequestType
-		51, //bRequest
+		51, //bRequest		ACCESSORY_GET_PROTOCOL
 		0, //wValue
 		0, //wIndex
 		ioBuffer, //data
@@ -163,7 +163,13 @@ int setupAccessory()
 	fprintf(stdout,"Verion Code Device: %d \n", devVersion);
 	
 	usleep(1000);//sometimes hangs on the next transfer :(
-
+//ACCESSORY_SEND_STRING	52
+// #define ACCESSORY_STRING_MANUFACTURER   0
+// #define ACCESSORY_STRING_MODEL          1
+// #define ACCESSORY_STRING_DESCRIPTION    2
+// #define ACCESSORY_STRING_VERSION        3
+// #define ACCESSORY_STRING_URI            4
+// #define ACCESSORY_STRING_SERIAL         5
 	if (usbSendCtrl(gadgetAccessory.manufacturer, 52, 0) < 0) {
 		return -1;
 	}
@@ -175,7 +181,7 @@ int setupAccessory()
 	}
 
 	fprintf(stdout,"Accessory Identification sent\n");
-
+//#define ACCESSORY_START         53
 	if (usbSendCtrl(NULL, 53, 0) < 0) {
 		return -1;
 	}
